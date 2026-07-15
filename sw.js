@@ -1,4 +1,4 @@
-const CACHE_NAME = 'privacy-calendar-v2';
+const CACHE_NAME = 'privacy-calendar-v3';
 const BASE = self.location.pathname.replace(/\/[^/]*$/, '/');
 const ASSETS = [
   BASE,
