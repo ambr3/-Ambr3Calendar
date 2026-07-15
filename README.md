@@ -4,7 +4,7 @@ A privacy-first, open-source calendar web app. All data stays on your device —
 
 Why PWA? I hate loads of installed apps on my phone, that simple.
 
-Why make this? I dont use Calendars to store anything on my phone, but somtimes it just nice to know where a date lands on a day when plan planning things. Also added some important dates for extra info.
+Why make this? I dont use Calendars to store anything on my phone, but somtimes it just nice to know where a date lands on a day when planning things. Also added some important dates for extra info.
 
 ## Features
 
