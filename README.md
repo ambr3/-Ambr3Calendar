@@ -2,6 +2,10 @@
 
 A privacy-first, open-source calendar web app. All data stays on your device — no servers, no accounts, no tracking.
 
+Why PWA? I hate loads of installed apps on my phone, That simple
+
+Why make this? I dont use Caendars to store anything on my phone, but somtimes it just nice to know where a date lands on a day when plan planning things. Also added some important dates for extra info.
+
 ## Features
 
 - **100% Private** — events stored in localStorage, nothing leaves your device
