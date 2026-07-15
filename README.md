@@ -2,9 +2,9 @@
 
 A privacy-first, open-source calendar web app. All data stays on your device — no servers, no accounts, no tracking.
 
-Why PWA? I hate loads of installed apps on my phone, That simple
+Why PWA? I hate loads of installed apps on my phone, that simple.
 
-Why make this? I dont use Caendars to store anything on my phone, but somtimes it just nice to know where a date lands on a day when plan planning things. Also added some important dates for extra info.
+Why make this? I dont use Calendars to store anything on my phone, but somtimes it just nice to know where a date lands on a day when plan planning things. Also added some important dates for extra info.
 
 ## Features
 
@@ -54,28 +54,6 @@ Why make this? I dont use Caendars to store anything on my phone, but somtimes i
 - Data never leaves your device
 - Fully open source — verify it yourself
 
-## Tech Stack
-
-- HTML5
-- CSS3 (Custom Properties, Grid, Flexbox, Glassmorphism, Gradients)
-- Vanilla JavaScript (ES6+)
-- Service Worker (offline caching, network-first strategy)
-- Web App Manifest (PWA)
-
-## Project Structure
-
-```
-.
-├── index.html          # Main app
-├── manifest.json       # PWA manifest
-├── sw.js               # Service worker
-├── css/
-│   └── calendar.css    # Styles
-├── js/
-│   └── app.js          # Calendar logic
-├── icon-192.png        # PWA icon
-└── icon-512.png        # PWA icon
-```
 
 ## Contributing
 
