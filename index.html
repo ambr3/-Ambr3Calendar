@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="description" content="A privacy-friendly calendar. All data stays on your device.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="theme-color" content="#6366f1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Privacy Calendar</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="css/calendar.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <button id="prev-month" aria-label="Previous month">&#8249;</button>
+      <h1 id="current-month"></h1>
+      <button id="next-month" aria-label="Next month">&#8250;</button>
+      <button id="today-btn" title="Go to today">Today</button>
+      <button id="theme-toggle" title="Toggle dark mode">&#9789;</button>
+    </header>
+
+    <div id="toolbar">
+      <div class="toolbar-left">
+        <button id="holidays-btn" title="Holidays &amp; Important Dates">
+          <span class="toolbar-icon">&#127760;</span>
+          <span class="toolbar-label">Holidays</span>
+        </button>
+      </div>
+      <div class="toolbar-actions">
+        <button id="export-btn" title="Export events">&#8681; Export</button>
+        <button id="import-btn" title="Import events">&#8682; Import</button>
+        <input type="file" id="import-file" accept=".json" class="hidden">
+      </div>
+    </div>
+
+    <div id="calendar">
+      <div id="weekday-header"></div>
+      <div id="days-grid"></div>
+    </div>
+
+    <div id="holidays-panel" class="hidden">
+      <div class="panel-header">
+        <h2>Holidays &amp; Dates</h2>
+        <button id="close-holidays-panel" aria-label="Close">&times;</button>
+      </div>
+      <div class="holidays-section">
+        <h3 class="section-title">Important Dates</h3>
+        <div id="important-dates-toggles"></div>
+      </div>
+      <div class="holidays-section">
+        <h3 class="section-title">Country Holidays</h3>
+        <div id="holidays-country-list"></div>
+      </div>
+    </div>
+
+    <div id="event-panel" class="hidden">
+      <div class="panel-header">
+        <h2 id="panel-date"></h2>
+        <button id="close-panel" aria-label="Close">&times;</button>
+      </div>
+      <div id="events-list"></div>
+      <button id="add-event-btn">+ Add Event</button>
+    </div>
+
+    <div id="event-modal" class="hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-title">New Event</h3>
+          <button id="close-modal" aria-label="Close">&times;</button>
+        </div>
+        <form id="event-form">
+          <input type="hidden" id="event-id">
+          <label for="event-title">Title</label>
+          <input type="text" id="event-title" required placeholder="Event name" autocomplete="off">
+          <label for="event-time">Time</label>
+          <input type="time" id="event-time">
+          <label for="event-end-time">End Time</label>
+          <input type="time" id="event-end-time">
+          <label for="event-desc">Description</label>
+          <textarea id="event-desc" rows="2" placeholder="Optional notes"></textarea>
+
+          <label for="event-recurrence">Repeat</label>
+          <div class="select-wrapper">
+            <select id="event-recurrence">
+              <option value="none">Never</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
+            </select>
+          </div>
+
+          <div id="recurrence-options" class="hidden">
+            <div class="recurrence-interval-row">
+              <span class="recurrence-label">Every</span>
+              <input type="number" id="recurrence-interval" min="1" max="99" value="1">
+              <span id="recurrence-unit">week(s)</span>
+            </div>
+            <label for="recurrence-end">Until</label>
+            <input type="date" id="recurrence-end">
+          </div>
+
+          <label>Color</label>
+          <div id="color-picker">
+            <button type="button" class="color-dot" data-color="#6366f1" style="background:#6366f1"></button>
+            <button type="button" class="color-dot" data-color="#ef4444" style="background:#ef4444"></button>
+            <button type="button" class="color-dot" data-color="#f59e0b" style="background:#f59e0b"></button>
+            <button type="button" class="color-dot" data-color="#10b981" style="background:#10b981"></button>
+            <button type="button" class="color-dot" data-color="#3b82f6" style="background:#3b82f6"></button>
+            <button type="button" class="color-dot" data-color="#ec4899" style="background:#ec4899"></button>
+            <button type="button" class="color-dot" data-color="#8b5cf6" style="background:#8b5cf6"></button>
+          </div>
+          <input type="hidden" id="event-color" value="#6366f1">
+          <div class="form-actions">
+            <button type="button" id="delete-event-btn" class="danger hidden">Delete</button>
+            <button type="submit" class="primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="privacy-badge">
+      <span>&#128274; 100% Private</span>
+      <small>No data leaves your device</small>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

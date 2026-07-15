@@ -1,0 +1,26 @@
+{
+  "name": "Privacy Calendar",
+  "short_name": "Calendar",
+  "version": "2.0",
+  "description": "A privacy-friendly calendar with offline support. All data stays on your device.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f6fa",
+  "theme_color": "#6366f1",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"]
+}
