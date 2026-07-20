@@ -4,7 +4,11 @@ A privacy-first, open-source calendar web app. All data stays on your device —
 
 Why PWA? I hate loads of installed apps on my phone, that simple.
 
-Why make this? I dont use Calendars to store anything on my phone, but somtimes it just nice to know where a date lands on a day when planning things. Also added some important dates for extra info.
+Why make this? I dont use Calendars to store my events, I still use a diary (Yes with a pen) but somtimes its just nice to know where a date lands on a day when planning things. Also i added some important dates for extra info.
+
+This is Vibe-Coded, I can code but not well. AI helps me alot to get my ideas into real things, without AI by the time ive coded somthing, ive either got bored or i just cant get the code to work.
+
+I would always recommend using Vanadium (GrapheneOS) or Brave Browser to install PWA's for max security. Please use at your own risk, as stated this has been vibe-coded and always check for security flaws before using.
 
 ## Features
 
@@ -18,49 +22,6 @@ Why make this? I dont use Calendars to store anything on my phone, but somtimes 
 - **Import/Export** — backup and restore your events as JSON
 - **Responsive** — works on mobile, tablet, and desktop
 - **Zero Dependencies** — vanilla HTML, CSS, JavaScript only
-
-## Countries Supported
-
-| Region | Countries |
-|--------|-----------|
-| **Americas** | United States, Canada, Mexico, Brazil, Argentina, Colombia, Chile |
-| **Europe** | United Kingdom, Ireland, France, Germany, Spain, Portugal, Italy, Netherlands, Belgium, Switzerland, Austria, Sweden, Norway, Denmark, Finland, Poland, Greece, Turkey |
-| **Asia-Pacific** | Japan, South Korea, China, Thailand, Philippines, India, Indonesia, Australia, New Zealand |
-| **Middle East/Africa** | UAE, South Africa |
-
-## Quick Start
-
-1. Open `index.html` in your browser
-2. That's it — no build step, no API keys, no server needed
-
-## Deploy to GitHub Pages
-
-1. Fork or clone this repo
-2. Push to GitHub
-3. Enable Pages: Settings > Pages > Source: `Deploy from branch` > `main`
-4. Your calendar is live at `https://<username>.github.io/<repo>/`
-
-### Install as App (Android)
-
-1. Open the deployed site in Chrome
-2. Tap the "Add to Home Screen" prompt
-3. The app installs as a standalone PWA
-
-## Privacy
-
-- No analytics, no cookies, no tracking pixels
-- No server communication whatsoever
-- All data stored in browser localStorage
-- Data never leaves your device
-- Fully open source — verify it yourself
-
-
-## Contributing
-
-1. Fork the repo
-2. Create a feature branch (`git checkout -b feature/my-feature`)
-3. Commit your changes
-4. Push to the branch and open a Pull Request
 
 ## License
 
