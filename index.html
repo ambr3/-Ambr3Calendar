@@ -2,26 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <meta name="description" content="A privacy-friendly calendar. All data stays on your device.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <meta name="theme-color" content="#6366f1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Ambr3Calendar — a privacy-friendly calendar. All data stays on your device.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; worker-src 'self'">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), midi=(), serial=(), display-capture=(), accelerometer=(), gyroscope=(), magnetometer=(), idle-detection=(), screen-wake-lock=(), clipboard-read=(), clipboard-write=()">
+  <meta name="theme-color" content="#4facfe">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1b2a">
+  <meta name="color-scheme" content="light dark">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Privacy Calendar</title>
+  <meta name="apple-mobile-web-app-title" content="Ambr3Calendar">
+  <title>Ambr3Calendar</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon-192.png" type="image/png">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="stylesheet" href="css/calendar.css">
+  <link rel="stylesheet" href="css/theme.css">
 </head>
 <body>
   <div id="app">
+    <div id="brand">Ambr3Calendar</div>
     <header>
-      <button id="prev-month" aria-label="Previous month">&#8249;</button>
+      <button id="prev-month" aria-label="Previous period">&#8249;</button>
       <h1 id="current-month"></h1>
-      <button id="next-month" aria-label="Next month">&#8250;</button>
+      <button id="next-month" aria-label="Next period">&#8250;</button>
+      <div id="jump-pop" class="hidden">
+        <label for="jump-month">Jump to month</label>
+        <div class="jump-row">
+          <select id="jump-month" aria-label="Month"></select>
+          <select id="jump-year" aria-label="Year"></select>
+        </div>
+        <button type="button" id="jump-close">Done</button>
+      </div>
       <button id="today-btn" title="Go to today">Today</button>
-      <button id="theme-toggle" title="Toggle dark mode">&#9789;</button>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">&#9789;</button>
     </header>
 
     <div id="toolbar">
@@ -30,17 +45,39 @@
           <span class="toolbar-icon">&#127760;</span>
           <span class="toolbar-label">Holidays</span>
         </button>
+        <div class="view-switch" role="tablist" aria-label="Calendar view">
+          <button class="view-btn active" data-view="month">Month</button>
+          <button class="view-btn" data-view="week">Week</button>
+          <button class="view-btn" data-view="year">Year</button>
+        </div>
       </div>
       <div class="toolbar-actions">
-        <button id="export-btn" title="Export events">&#8681; Export</button>
-        <button id="import-btn" title="Import events">&#8682; Import</button>
-        <input type="file" id="import-file" accept=".json" class="hidden">
+        <button id="search-btn" title="Search events" aria-label="Search events">&#128269;</button>
+        <button id="settings-btn" title="Settings" aria-label="Settings">&#9881;</button>
+        <button id="export-btn" title="Export" aria-label="Export events">&#8681;</button>
+        <button id="import-btn" title="Import" aria-label="Import events">&#8682;</button>
+        <input type="file" id="import-file" accept=".json,.ics,text/calendar" class="hidden">
       </div>
     </div>
 
     <div id="calendar">
-      <div id="weekday-header"></div>
-      <div id="days-grid"></div>
+      <div id="month-view">
+        <div id="weekday-header"></div>
+        <div id="days-grid"></div>
+      </div>
+      <div id="week-view" class="hidden"></div>
+      <div id="year-view" class="hidden"></div>
+    </div>
+
+    <div id="search-overlay" class="hidden">
+      <div class="search-box">
+        <div class="panel-header">
+          <h2>Search</h2>
+          <button id="close-search" aria-label="Close">&times;</button>
+        </div>
+        <input type="search" id="search-input" placeholder="Search events, holidays&hellip;" autocomplete="off">
+        <div id="search-results"></div>
+      </div>
     </div>
 
     <div id="holidays-panel" class="hidden">
@@ -55,6 +92,53 @@
       <div class="holidays-section">
         <h3 class="section-title">Country Holidays</h3>
         <div id="holidays-country-list"></div>
+      </div>
+    </div>
+
+    <div id="settings-modal" class="hidden">
+      <div class="modal-content settings-content">
+        <div class="modal-header">
+          <h3 id="settings-title">Settings</h3>
+          <button id="close-settings" aria-label="Close">&times;</button>
+        </div>
+        <div class="settings-section">
+          <h4>General</h4>
+          <label for="week-start-select">Week starts on</label>
+          <div class="select-wrapper">
+            <select id="week-start-select">
+              <option value="0">Sunday</option>
+              <option value="1">Monday</option>
+            </select>
+          </div>
+          <label for="lang-select">Language</label>
+          <div class="select-wrapper">
+            <select id="lang-select">
+              <option value="en">English</option>
+              <option value="sr">Српски</option>
+              <option value="sr-lat">Srpski</option>
+              <option value="tr">Türkçe</option>
+            </select>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h4>Notifications</h4>
+          <div class="settings-row">
+            <button id="reminder-permission-btn">Enable notifications</button>
+          </div>
+          <p class="settings-hint">Used for event reminders. Nothing is sent anywhere.</p>
+        </div>
+        <div class="settings-section">
+          <h4>Data</h4>
+          <div class="settings-row">
+            <button id="export-json-btn" class="primary">Export as JSON</button>
+            <button id="export-ics-btn" class="primary">Export as iCal (.ics)</button>
+          </div>
+          <div class="settings-row">
+            <button id="import-json-btn">Import JSON</button>
+            <button id="import-ics-btn">Import iCal (.ics)</button>
+          </div>
+          <p class="settings-hint">All data is stored locally on your device &mdash; nothing is ever sent to a server. <strong>Warning:</strong> your events will be deleted if the browser cache is cleared. Export a backup regularly to keep them safe.</p>
+        </div>
       </div>
     </div>
 
@@ -81,6 +165,19 @@
           <input type="time" id="event-time">
           <label for="event-end-time">End Time</label>
           <input type="time" id="event-end-time">
+          <label for="event-end-date">End Date</label>
+          <input type="date" id="event-end-date">
+          <label for="event-reminder">Reminder</label>
+          <div class="select-wrapper">
+            <select id="event-reminder">
+              <option value="">None</option>
+              <option value="0">At time of event</option>
+              <option value="10">10 minutes before</option>
+              <option value="30">30 minutes before</option>
+              <option value="60">1 hour before</option>
+              <option value="1440">1 day before</option>
+            </select>
+          </div>
           <label for="event-desc">Description</label>
           <textarea id="event-desc" rows="2" placeholder="Optional notes"></textarea>
 
@@ -107,13 +204,13 @@
 
           <label>Color</label>
           <div id="color-picker">
-            <button type="button" class="color-dot" data-color="#6366f1" style="background:#6366f1"></button>
-            <button type="button" class="color-dot" data-color="#ef4444" style="background:#ef4444"></button>
-            <button type="button" class="color-dot" data-color="#f59e0b" style="background:#f59e0b"></button>
-            <button type="button" class="color-dot" data-color="#10b981" style="background:#10b981"></button>
-            <button type="button" class="color-dot" data-color="#3b82f6" style="background:#3b82f6"></button>
-            <button type="button" class="color-dot" data-color="#ec4899" style="background:#ec4899"></button>
-            <button type="button" class="color-dot" data-color="#8b5cf6" style="background:#8b5cf6"></button>
+            <button type="button" class="color-dot" data-color="#6366f1" style="background:#6366f1" aria-label="Event color #6366f1" aria-pressed="false"></button>
+            <button type="button" class="color-dot" data-color="#ef4444" style="background:#ef4444" aria-label="Event color #ef4444" aria-pressed="false"></button>
+            <button type="button" class="color-dot" data-color="#f59e0b" style="background:#f59e0b" aria-label="Event color #f59e0b" aria-pressed="false"></button>
+            <button type="button" class="color-dot" data-color="#10b981" style="background:#10b981" aria-label="Event color #10b981" aria-pressed="false"></button>
+            <button type="button" class="color-dot" data-color="#3b82f6" style="background:#3b82f6" aria-label="Event color #3b82f6" aria-pressed="false"></button>
+            <button type="button" class="color-dot" data-color="#ec4899" style="background:#ec4899" aria-label="Event color #ec4899" aria-pressed="false"></button>
+            <button type="button" class="color-dot" data-color="#8b5cf6" style="background:#8b5cf6" aria-label="Event color #8b5cf6" aria-pressed="false"></button>
           </div>
           <input type="hidden" id="event-color" value="#6366f1">
           <div class="form-actions">
@@ -124,12 +221,9 @@
       </div>
     </div>
 
-    <div id="privacy-badge">
-      <span>&#128274; 100% Private</span>
-      <small>No data leaves your device</small>
-    </div>
+    <footer id="privacy-note">v0.2.0 &middot; 100% private &middot; all data stays on your device &middot; <a href="https://github.com/ambr3/-Ambr3Calendar" target="_blank" rel="noopener">open source</a> under GPL v3</footer>
   </div>
 
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=2.3"></script>
 </body>
 </html>

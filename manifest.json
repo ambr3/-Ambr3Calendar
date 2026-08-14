@@ -1,26 +1,44 @@
 {
-  "name": "Privacy Calendar",
-  "short_name": "Calendar",
-  "version": "2.0",
-  "description": "A privacy-friendly calendar with offline support. All data stays on your device.",
+  "name": "Ambr3Calendar",
+  "short_name": "Ambr3Calendar",
+  "id": "ambr3-calendar",
+  "version": "0.2.0",
+  "lang": "en",
+  "dir": "ltr",
+  "description": "A 100% private calendar. All data stays on your device — no accounts, no servers, no tracking.",
   "start_url": ".",
+  "scope": ".",
   "display": "standalone",
-  "background_color": "#f5f6fa",
-  "theme_color": "#6366f1",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "any",
+  "background_color": "#4facfe",
+  "theme_color": "#4facfe",
+  "categories": ["productivity", "utilities"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ],
-  "categories": ["productivity", "utilities"]
+  ]
 }
