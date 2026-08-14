@@ -13,7 +13,6 @@ This is partially Vibe-Coded, I can code but not well, there's currently around 
 I would always recommend using Vanadium (GrapheneOS) or Brave Browser to install PWA's for max security. Please use at your own risk, as stated this has been vibe-coded and always check for security flaws before using.
 
 ---
-
 ## Features
 
 - **Month, Week & Year views** — switch with the toolbar buttons; the month grid shows each date in its own square box.
