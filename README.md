@@ -43,20 +43,6 @@ I would always recommend using Vanadium (GrapheneOS) or Brave Browser to install
 - Works offline thanks to the service worker — cached assets are served when there's no connection.
 - Fullscreen/standalone mode with safe-area support for notched phones.
 
-## Run locally
-
-The app is a static site — no build step needed. Serve the folder over HTTP (a service worker requires a secure context, and `file://` won't do):
-
-```bash
-python3 -m http.server 8080 --bind 127.0.0.1   # serves on http://localhost:8080
-```
-
-Then open <http://localhost:8080>. Localhost is a secure context, so the service worker registers and the app can be installed as a PWA directly from the browser menu.
-
-> Note: the old `start.sh` convenience script is not included in this repository; any static file server works (e.g. `npx serve`, `python3 -m http.server`).
-
----
-
 ## Changelog
 
 ### 0.2.0 Beta — 2026-08-13
