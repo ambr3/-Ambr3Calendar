@@ -87,8 +87,8 @@
   }
 
   function initTheme() {
-    const saved = localStorage.getItem(THEME_KEY);
-    if (saved) {
+    const saved = safeGet(THEME_KEY);
+    if (saved === 'dark' || saved === 'light') {
       applyTheme(saved);
     } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       applyTheme('dark');
@@ -178,6 +178,10 @@
 
   function safeSet(key, value) {
     try { localStorage.setItem(key, value); } catch { /* storage may be unavailable */ }
+  }
+
+  function safeGet(key) {
+    try { return localStorage.getItem(key); } catch { return null; }
   }
 
   function sanitizeEvent(ev) {
@@ -1030,7 +1034,7 @@
   // ===== STORAGE =====
   function loadEvents() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = safeGet(STORAGE_KEY);
       events = raw ? JSON.parse(raw) : {};
       if (!events || typeof events !== 'object') { events = {}; return; }
       for (const key of Object.keys(events)) {
@@ -1046,12 +1050,17 @@
   }
 
   function loadHolidayPreference() {
+    const saved = safeGet(HOLIDAYS_STORAGE_KEY);
+    if (!saved) return;
     try {
-      const saved = localStorage.getItem(HOLIDAYS_STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.countries) selectedCountries = parsed.countries;
-        if (parsed.important) enabledImportantDates = parsed.important;
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed.countries)) {
+        const valid = parsed.countries.filter(c => COUNTRY_META[c]);
+        if (valid.length) selectedCountries = valid;
+      }
+      if (Array.isArray(parsed.important)) {
+        const valid = parsed.important.filter(id => IMPORTANT_DATES_META[id]);
+        if (valid.length) enabledImportantDates = valid;
       }
     } catch { /* keep defaults */ }
   }
@@ -1066,8 +1075,8 @@
   // ===== SETTINGS =====
   function loadSettings() {
     try {
-      const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
-      if (typeof s.weekStart === 'number') weekStart = s.weekStart;
+      const s = JSON.parse(safeGet(SETTINGS_KEY) || '{}');
+      if (s.weekStart === 0 || s.weekStart === 1) weekStart = s.weekStart;
       if (s.lang && LANGS[s.lang]) lang = s.lang;
     } catch { /* keep defaults */ }
   }
@@ -1118,8 +1127,9 @@
     m.innerHTML = L().months.map((n, i) => `<option value="${i}">${n}</option>`).join('');
     const y = document.getElementById('jump-year');
     const yr = currentDate.getFullYear();
-    y.innerHTML = '';
-    for (let i = yr - 10; i <= yr + 10; i++) y.innerHTML += `<option value="${i}">${i}</option>`;
+    const opts = [];
+    for (let i = yr - 10; i <= yr + 10; i++) opts.push(`<option value="${i}">${i}</option>`);
+    y.innerHTML = opts.join('');
   }
 
   function toggleJump() {
@@ -1234,7 +1244,7 @@
     const btn = document.getElementById('reminder-permission-btn');
     if (btn) {
       btn.addEventListener('click', () => {
-        Notification.requestPermission().then(syncReminderBtn);
+        Notification.requestPermission().then(syncReminderBtn).catch(() => {});
       });
     }
     syncReminderBtn();
@@ -1432,6 +1442,7 @@
   }
 
   function renderMonthView() {
+    document.getElementById('month-view').classList.remove('hidden');
     weekdayHeader.classList.remove('hidden');
     daysGrid.classList.remove('hidden');
     document.getElementById('week-view').classList.add('hidden');
@@ -1463,12 +1474,15 @@
     for (let day = 1; day <= remaining; day++) {
       daysGrid.appendChild(createDayCell(new Date(year, month + 1, day), day, true, false));
     }
+    renderMonthEventsList();
   }
 
   function renderWeekView() {
     weekdayHeader.classList.add('hidden');
     daysGrid.classList.add('hidden');
+    document.getElementById('month-view').classList.add('hidden');
     document.getElementById('year-view').classList.add('hidden');
+    document.getElementById('month-events-list').classList.add('hidden');
     const wk = document.getElementById('week-view');
     wk.classList.remove('hidden');
     wk.innerHTML = '';
@@ -1552,7 +1566,9 @@
   function renderYearView() {
     weekdayHeader.classList.add('hidden');
     daysGrid.classList.add('hidden');
+    document.getElementById('month-view').classList.add('hidden');
     document.getElementById('week-view').classList.add('hidden');
+    document.getElementById('month-events-list').classList.add('hidden');
     const yv = document.getElementById('year-view');
     yv.classList.remove('hidden');
     yv.innerHTML = '';
@@ -1624,43 +1640,113 @@
 
     const dayEvents = getEventsForKey(key);
     if (dayEvents.length > 0) {
-      const evContainer = document.createElement('div');
-      evContainer.className = 'day-events';
-      dayEvents.slice(0, 2).forEach(ev => {
-        if (window.innerWidth > 400) {
-          const pill = document.createElement('div');
-          pill.className = 'event-pill';
-          pill.style.background = ev.color || '#6366f1';
-          pill.textContent = ev.title;
-          if (!ev.holiday && !ev.important) {
-            makeDraggable(pill, ev.originalDate || key, ev.id);
-            pill.addEventListener('click', (e) => {
-              e.stopPropagation();
-              openModal(ev.originalDate || key, ev.id);
-            });
-          }
-          evContainer.appendChild(pill);
-        } else {
-          const dot = document.createElement('div');
-          dot.className = 'event-dot';
-          dot.style.background = ev.color || '#6366f1';
-          dot.style.color = ev.color || '#6366f1';
-          evContainer.appendChild(dot);
-        }
-      });
-      if (dayEvents.length > 2) {
-        const more = document.createElement('div');
-        more.className = 'event-pill';
-        more.style.background = 'var(--surface-hover)';
-        more.textContent = `+${dayEvents.length - 2}`;
-        evContainer.appendChild(more);
-      }
-      cell.appendChild(evContainer);
+      const hl = document.createElement('div');
+      hl.className = 'date-highlight';
+      hl.style.background = dayEvents[0].color || '#6366f1';
+      hl.title = dayEvents.map(ev => ev.title).join(', ');
+      cell.appendChild(hl);
     }
 
     setupDrop(cell);
     cell.addEventListener('click', () => openPanel(key));
     return cell;
+  }
+
+  function renderMonthEventsList() {
+    const el = document.getElementById('month-events-list');
+    el.innerHTML = '';
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const rows = [];
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const key = dateKey(year, month, day);
+      getEventsForKey(key).forEach(ev => rows.push({ key, day, ev }));
+    }
+
+    if (rows.length === 0) {
+      el.classList.add('hidden');
+      return;
+    }
+
+    rows.sort((a, b) => {
+      if (a.day !== b.day) return a.day - b.day;
+      if (a.ev.holiday && !b.ev.holiday) return -1;
+      if (!a.ev.holiday && b.ev.holiday) return 1;
+      if (a.ev.important && !b.ev.important) return -1;
+      if (!a.ev.important && b.ev.important) return 1;
+      return timeToMinutes(a.ev.time) - timeToMinutes(b.ev.time);
+    });
+
+    const title = document.createElement('div');
+    title.className = 'month-list-title';
+    title.textContent = `${monthName(month)} ${year} · ${rows.length} ${rows.length === 1 ? 'event' : 'events'}`;
+    el.appendChild(title);
+
+    rows.forEach(({ key, day, ev }) => {
+      const item = document.createElement('div');
+      item.className = 'event-item';
+
+      const date = document.createElement('div');
+      date.className = 'month-ev-date';
+      const dayNum = document.createElement('div');
+      dayNum.className = 'month-ev-day';
+      dayNum.textContent = day;
+      const wd = document.createElement('div');
+      wd.className = 'month-ev-wd';
+      wd.textContent = dayName(new Date(year, month, day).getDay()).slice(0, 3);
+      date.appendChild(dayNum);
+      date.appendChild(wd);
+      item.appendChild(date);
+
+      const bar = document.createElement('div');
+      bar.className = 'event-color-bar';
+      bar.style.background = ev.color || '#6366f1';
+      item.appendChild(bar);
+
+      const info = document.createElement('div');
+      info.className = 'event-info';
+
+      const name = document.createElement('div');
+      name.className = 'event-name';
+      name.appendChild(document.createTextNode(ev.title || ''));
+      if (ev.holiday) {
+        const tag = document.createElement('span');
+        tag.className = 'holiday-tag';
+        tag.textContent = ev.country || 'Holiday';
+        name.appendChild(tag);
+      } else if (ev.important) {
+        const tag = document.createElement('span');
+        tag.className = 'important-tag';
+        tag.textContent = 'Important';
+        name.appendChild(tag);
+      }
+      info.appendChild(name);
+
+      const time = document.createElement('div');
+      time.className = 'event-time-display';
+      if (ev.holiday) time.textContent = 'Public Holiday';
+      else if (ev.important) time.textContent = 'Important Date';
+      else {
+        time.textContent = formatTimeRange(ev.time, ev.endTime);
+        if (ev.endDate && ev.endDate !== key && /^\d{4}-\d{2}-\d{2}$/.test(ev.endDate)) {
+          time.textContent += ' · ends ' + formatShortDate(parseDateKey(ev.endDate));
+        }
+      }
+      info.appendChild(time);
+
+      item.appendChild(info);
+      if (!ev.holiday && !ev.important) {
+        item.addEventListener('click', () => openModal(ev.originalDate || key, ev.id));
+      } else {
+        item.addEventListener('click', () => openPanel(key));
+      }
+      el.appendChild(item);
+    });
+
+    el.classList.remove('hidden');
   }
 
   // ===== EVENT PANEL =====
@@ -1849,7 +1935,7 @@
     if (recurrenceValue !== 'none') {
       recurrence = {
         frequency: recurrenceValue,
-        interval: parseInt(document.getElementById('recurrence-interval').value) || 1,
+        interval: parseInt(document.getElementById('recurrence-interval').value, 10) || 1,
         endDate: document.getElementById('recurrence-end').value || null,
       };
     }
@@ -2142,6 +2228,7 @@
 
   function handleImportFile(file) {
     const reader = new FileReader();
+    reader.onerror = () => { alert('Failed to read file'); };
     reader.onload = (e) => {
       const name = (file.name || '').toLowerCase();
       if (name.endsWith('.ics')) {
@@ -2155,7 +2242,7 @@
           alert('Invalid calendar file');
           return;
         }
-        const count = Object.values(data.events).reduce((n, arr) => n + arr.length, 0);
+        const count = Object.values(data.events).reduce((n, arr) => n + (Array.isArray(arr) ? arr.length : 0), 0);
         const overwrite = confirm(
           `Found ${count} event(s) in file.\n\nOK = Merge with existing events\nCancel = Replace all events`
         );

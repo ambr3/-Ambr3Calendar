@@ -155,6 +155,7 @@ body::before {
   flex-direction: column;
   height: 100vh;
   height: 100dvh;
+  overflow: hidden;
   max-width: 600px;
   margin: 0 auto;
   padding: 0 12px;
@@ -335,7 +336,8 @@ header button:active {
 
 /* ===== CALENDAR ===== */
 #calendar {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -373,7 +375,15 @@ header button:active {
   }
 }
 
+#month-view {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 #weekday-header {
+  flex: 0 0 auto;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
@@ -389,9 +399,12 @@ header button:active {
 }
 
 #days-grid {
+  flex: 1 1 auto;
+  min-height: 210px;
+  overflow: hidden;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: auto;
+  grid-auto-rows: 1fr;
   gap: 4px;
 }
 
@@ -400,14 +413,13 @@ header button:active {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5px 2px;
+  padding: 3px 2px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-card-border);
   background: var(--bg);
   cursor: pointer;
   transition: background 0.12s ease, border-color 0.12s ease;
   overflow: hidden;
-  aspect-ratio: 1 / 1;
 }
 
 .day-cell:hover {
@@ -431,8 +443,8 @@ header button:active {
   background: var(--primary-grad);
   color: #0d1b2a;
   border-radius: 50%;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -462,45 +474,22 @@ header button:active {
 }
 
 .day-number {
-  font-size: 1.12rem;
+  font-size: 1.02rem;
   font-weight: 700;
-  line-height: 34px;
+  line-height: 28px;
   color: var(--text);
   transition: transform 0.15s ease;
 }
 
-.day-events {
-  display: flex;
-  gap: 3px;
-  margin-top: 3px;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.event-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+.date-highlight {
+  width: 60%;
+  max-width: 44px;
+  min-width: 12px;
+  height: 4px;
+  border-radius: 999px;
+  margin: 3px auto 0;
   flex-shrink: 0;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
-}
-
-.event-pill {
-  font-size: 0.72rem;
-  line-height: 16px;
-  padding: 0 5px;
-  border-radius: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  color: white;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
 /* ===== BOTTOM PANELS ===== */
@@ -678,6 +667,45 @@ header button:active {
 .country-toggle:checked::after {
   transform: translateX(18px);
   background: white;
+}
+
+/* ===== MONTH EVENTS LIST ===== */
+#month-events-list {
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: 30%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 10px;
+  border-top: 1px solid var(--color-card-border);
+  padding-top: 4px;
+}
+
+.month-list-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  padding: 6px 10px;
+}
+
+.month-ev-date {
+  width: 34px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.month-ev-day {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.month-ev-wd {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
 }
 
 /* ===== EVENT LIST ===== */
@@ -1354,7 +1382,6 @@ header button:active {
   border-left-color: rgba(255, 255, 255, 0.85);
 }
 
-.event-pill.drag-source,
 .week-event.drag-source {
   opacity: 0.45;
   outline: 2px dashed rgba(255, 255, 255, 0.6);
@@ -1638,13 +1665,12 @@ header button:active {
 
 /* ===== RESPONSIVE ===== */
 @media (min-height: 700px) {
-  .day-cell { padding: 6px 2px; }
+  .day-cell { padding: 3px 2px; }
 }
 
 @media (min-width: 768px) {
   #app { padding: 0 32px; }
   .day-number { font-size: 1.15rem; }
-  .event-pill { font-size: 0.78rem; }
   #year-view { grid-template-columns: repeat(3, 1fr); }
 }
 

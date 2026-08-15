@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ambr3-calendar-v14';
+const CACHE_NAME = 'ambr3-calendar-v16';
 const BASE = self.location.pathname.replace(/\/[^/]*$/, '/');
 const ASSETS = [
   BASE,
@@ -14,7 +14,7 @@ const ALLOWED_CACHE = new Set(ASSETS);
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS))
+      .then(cache => cache.addAll(ASSETS).catch(() => {}))
       .then(() => self.skipWaiting())
   );
 });
@@ -35,7 +35,7 @@ self.addEventListener('fetch', (e) => {
     if (cached) return cached;
     if (req.mode === 'navigate') return caches.match(BASE + 'index.html');
     return Response.error();
-  });
+  }).catch(() => Response.error());
 
   e.respondWith(
     new Promise((resolve) => {
