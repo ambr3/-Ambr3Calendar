@@ -29,15 +29,15 @@
   --text-secondary: rgba(255, 255, 255, 0.9);
   --text-muted: rgba(255, 255, 255, 0.68);
 
-  --primary: #ffd166;
-  --primary-hover: #ffc53d;
-  --primary-grad: linear-gradient(135deg, #ffd166, #ff9e2c);
-  --primary-dim: rgba(255, 209, 102, 0.18);
+  --primary: #4facfe;
+  --primary-hover: #3a9be0;
+  --primary-grad: linear-gradient(135deg, #4facfe, #00f2fe);
+  --primary-dim: rgba(79, 172, 254, 0.18);
   --accent-2: #ff6b9d;
 
   --danger: #ff6b6b;
   --danger-dim: rgba(255, 107, 107, 0.2);
-  --warning: #ffd166;
+  --warning: #f97316;
 
   --radius: 16px;
   --radius-sm: 12px;
@@ -69,9 +69,9 @@
   --text-secondary: rgba(232, 234, 237, 0.75);
   --text-muted: rgba(232, 234, 237, 0.5);
 
-  --primary: #ffd166;
-  --primary-hover: #ffc53d;
-  --primary-dim: rgba(255, 209, 102, 0.16);
+  --primary: #4facfe;
+  --primary-hover: #3a9be0;
+  --primary-dim: rgba(79, 172, 254, 0.16);
 
   --danger: #ff7b7b;
   --danger-dim: rgba(255, 123, 123, 0.2);
@@ -103,7 +103,7 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(420px 420px at 12% 18%, rgba(255, 209, 102, 0.22), transparent 65%),
+    radial-gradient(420px 420px at 12% 18%, rgba(79, 172, 254, 0.15), transparent 65%),
     radial-gradient(480px 480px at 88% 30%, rgba(255, 107, 157, 0.2), transparent 65%),
     radial-gradient(520px 520px at 70% 88%, rgba(255, 255, 255, 0.25), transparent 65%);
   animation: orbDrift 14s ease-in-out infinite alternate;
@@ -111,7 +111,7 @@ body::before {
 
 [data-theme="dark"] body::before {
   background:
-    radial-gradient(420px 420px at 12% 18%, rgba(255, 209, 102, 0.1), transparent 65%),
+    radial-gradient(420px 420px at 12% 18%, rgba(79, 172, 254, 0.08), transparent 65%),
     radial-gradient(480px 480px at 88% 30%, rgba(255, 107, 157, 0.14), transparent 65%),
     radial-gradient(520px 520px at 70% 88%, rgba(120, 140, 255, 0.18), transparent 65%);
 }
@@ -449,13 +449,13 @@ header button:active {
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.2), 0 4px 16px rgba(255, 158, 44, 0.5);
-  animation: todayPulse 2.4s ease-in-out infinite;
+   box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.2), 0 4px 16px rgba(79, 172, 254, 0.5);
+   animation: todayPulse 2.4s ease-in-out infinite;
 }
 
 @keyframes todayPulse {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.2), 0 4px 16px rgba(255, 158, 44, 0.5); }
-  50% { box-shadow: 0 0 0 8px rgba(255, 209, 102, 0.08), 0 6px 24px rgba(255, 158, 44, 0.65); }
+  0%, 100% { box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.2), 0 4px 16px rgba(79, 172, 254, 0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(79, 172, 254, 0.08), 0 6px 24px rgba(79, 172, 254, 0.65); }
 }
 
 @media (hover: none) {
@@ -470,7 +470,7 @@ header button:active {
 }
 
 .day-cell.today.selected {
-  background: rgba(255, 209, 102, 0.28);
+  background: rgba(79, 172, 254, 0.28);
 }
 
 .day-number {
@@ -589,7 +589,7 @@ header button:active {
   height: 7px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary), var(--accent-2));
-  box-shadow: 0 0 12px rgba(255, 209, 102, 0.8);
+  box-shadow: 0 0 12px rgba(79, 172, 254, 0.6);
   flex-shrink: 0;
 }
 
@@ -801,14 +801,14 @@ header button:active {
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 6px 24px rgba(255, 158, 44, 0.4);
+  box-shadow: 0 6px 24px rgba(79, 172, 254, 0.4);
   transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 #add-event-btn:hover {
-  background: linear-gradient(135deg, #ffde87, #ff9e2c);
+  background: linear-gradient(135deg, #6bb8ff, #3a9be0);
   transform: translateY(-1px);
-  box-shadow: 0 8px 28px rgba(255, 158, 44, 0.5);
+  box-shadow: 0 8px 28px rgba(79, 172, 254, 0.5);
 }
 
 #add-event-btn:active {
@@ -1062,11 +1062,11 @@ header button:active {
 .form-actions .primary {
   background: var(--primary-grad);
   color: #0d1b2a;
-  box-shadow: 0 6px 24px rgba(255, 158, 44, 0.4);
+  box-shadow: 0 6px 24px rgba(79, 172, 254, 0.4);
 }
 
 .form-actions .primary:hover {
-  background: linear-gradient(135deg, #ffde87, #ff9e2c);
+  background: linear-gradient(135deg, #6bb8ff, #3a9be0);
   transform: translateY(-1px);
 }
 
@@ -1180,7 +1180,7 @@ header button:active {
 .view-btn.active {
   background: var(--primary-grad);
   color: #0d1b2a;
-  box-shadow: 0 2px 10px rgba(255, 158, 44, 0.4);
+  box-shadow: 0 2px 10px rgba(79, 172, 254, 0.4);
 }
 
 /* ===== JUMP POPOVER ===== */
@@ -1251,7 +1251,7 @@ header button:active {
 }
 
 #jump-close:hover {
-  background: linear-gradient(135deg, #ffde87, #ff9e2c);
+  background: linear-gradient(135deg, #6bb8ff, #3a9be0);
 }
 
 /* ===== WEEK VIEW ===== */
@@ -1332,7 +1332,7 @@ header button:active {
 .week-day-head.today .week-day-num {
   background: var(--primary-grad);
   color: #0d1b2a;
-  box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.2);
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
 }
 
 .week-day-head.other-month .week-day-num {
@@ -1653,7 +1653,7 @@ header button:active {
 .settings-row button.primary {
   background: var(--primary-grad);
   color: #0d1b2a;
-  box-shadow: 0 4px 16px rgba(255, 158, 44, 0.35);
+  box-shadow: 0 4px 16px rgba(79, 172, 254, 0.35);
 }
 
 .settings-hint {

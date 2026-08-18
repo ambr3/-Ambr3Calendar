@@ -6,7 +6,7 @@
   const THEME_KEY = 'privacy_calendar_theme';
   const SETTINGS_KEY = 'ambr3_calendar_settings';
   const HOLIDAY_COLOR = '#dc2626';
-  const IMPORTANT_COLOR = '#f59e0b';
+  const IMPORTANT_COLOR = '#f97316';
 
   const LANGS = {
     en: { months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -163,12 +163,6 @@
   function parseDateKey(key) {
     const [y, m, d] = key.split('-').map(Number);
     return new Date(y, m - 1, d);
-  }
-
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
   }
 
   function safeId() {
