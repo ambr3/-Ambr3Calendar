@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ambr3-calendar-v16';
+const CACHE_NAME = 'ambr3-calendar-v17';
 const BASE = self.location.pathname.replace(/\/[^/]*$/, '/');
 const ASSETS = [
   BASE,
@@ -14,7 +14,10 @@ const ALLOWED_CACHE = new Set(ASSETS);
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS).catch(() => {}))
+      .then(cache => cache.addAll(ASSETS))
+      .catch(err => {
+        console.warn('[SW] addAll failed, activating anyway:', err);
+      })
       .then(() => self.skipWaiting())
   );
 });
@@ -37,6 +40,15 @@ self.addEventListener('fetch', (e) => {
     return Response.error();
   }).catch(() => Response.error());
 
+  function cacheResponse(resp) {
+    if (!resp || !resp.ok) return;
+    let p = '';
+    try { p = new URL(req.url).pathname; } catch (_) { return; }
+    if (!ALLOWED_CACHE.has(p)) return;
+    const clone = resp.clone();
+    caches.open(CACHE_NAME).then(cache => cache.put(req, clone)).catch(() => {});
+  }
+
   e.respondWith(
     new Promise((resolve) => {
       let settled = false;
@@ -46,16 +58,9 @@ self.addEventListener('fetch', (e) => {
       }, 4000);
       fetch(req)
         .then(resp => {
+          cacheResponse(resp);
           if (settled) return;
           clearTimeout(timer);
-          if (resp && resp.ok) {
-            const clone = resp.clone();
-            let p = '';
-            try { p = new URL(req.url).pathname; } catch (e) {}
-            if (ALLOWED_CACHE.has(p)) {
-              caches.open(CACHE_NAME).then(cache => cache.put(req, clone)).catch(() => {});
-            }
-          }
           resolve(resp);
         })
         .catch(() => {

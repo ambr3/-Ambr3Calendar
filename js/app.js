@@ -5,6 +5,8 @@
   const HOLIDAYS_STORAGE_KEY = 'privacy_calendar_holidays_v2';
   const THEME_KEY = 'privacy_calendar_theme';
   const SETTINGS_KEY = 'ambr3_calendar_settings';
+  const ACCENT_COLOR_KEY = 'ambr3_calendar_accent';
+  const APP_NAME_KEY = 'ambr3_calendar_appname';
   const HOLIDAY_COLOR = '#dc2626';
   const IMPORTANT_COLOR = '#f97316';
 
@@ -36,6 +38,8 @@
   let currentView = 'month';
   let weekStart = 0;
   let lang = 'en';
+  let accentColor = '#4facfe';
+  let appName = '';
   let events = {};
   let selectedCountries = ['uk'];
   let enabledImportantDates = ['valentines', 'halloween', 'mothers_day', 'fathers_day', 'new_years_eve'];
@@ -94,6 +98,35 @@
       applyTheme('dark');
     } else {
       applyTheme('light');
+    }
+  }
+
+  function applyAccentColor(color) {
+    accentColor = color;
+    document.documentElement.style.setProperty('--accent-color', color);
+    safeSet(ACCENT_COLOR_KEY, color);
+  }
+
+  function applyAppName(name) {
+    appName = name;
+    const brandEl = document.getElementById('brand');
+    const defaultName = 'Ambr3Calendar';
+    if (brandEl) brandEl.textContent = name || defaultName;
+    document.title = name || defaultName;
+    safeSet(APP_NAME_KEY, name);
+  }
+
+  function loadAccentColor() {
+    const saved = safeGet(ACCENT_COLOR_KEY);
+    if (saved && /^#[0-9a-fA-F]{6}$/.test(saved)) {
+      applyAccentColor(saved);
+    }
+  }
+
+  function loadAppName() {
+    const saved = safeGet(APP_NAME_KEY);
+    if (saved) {
+      applyAppName(saved);
     }
   }
 
@@ -1011,6 +1044,8 @@
   // ===== INIT =====
   function init() {
     initTheme();
+    loadAccentColor();
+    loadAppName();
     loadSettings();
     loadEvents();
     loadHolidayPreference();
@@ -1084,6 +1119,8 @@
     const ls = document.getElementById('lang-select');
     ls.innerHTML = Object.keys(LANGS).map(c => `<option value="${c}">${c.toUpperCase()}</option>`).join('');
     ls.value = lang;
+    document.getElementById('accent-color-input').value = accentColor;
+    document.getElementById('app-name-input').value = appName;
   }
 
   function setView(view) {
@@ -2079,6 +2116,13 @@
     return s.replace(/[\\;,]/g, m => '\\' + m).replace(/\r?\n/g, '\\n');
   }
 
+  function icsUnescape(s) {
+    return s.replace(/\\([\\,;nN])/g, (_, ch) => {
+      if (ch === 'n' || ch === 'N') return '\n';
+      return ch;
+    });
+  }
+
   function exportIcs() {
     const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Ambr3Calendar//EN', 'CALSCALE:GREGORIAN'];
     for (const [key, evs] of Object.entries(events)) {
@@ -2196,11 +2240,11 @@
 
       const ev = sanitizeEvent({
         id: (v.UID || safeId()).split('@')[0],
-        title: (v.SUMMARY || '').replace(/\\[\\,;]/g, s => s.slice(1)),
+        title: icsUnescape(v.SUMMARY || ''),
         time,
         endTime,
         endDate,
-        desc: (v.DESCRIPTION || '').replace(/\\n/g, '\n'),
+        desc: icsUnescape(v.DESCRIPTION || ''),
         color: '#6366f1',
         recurrence,
       });
@@ -2384,6 +2428,12 @@
       document.getElementById('today-btn').textContent = L().today;
       buildJumpOptions();
       renderCalendar();
+    });
+    document.getElementById('accent-color-input').addEventListener('input', (e) => {
+      applyAccentColor(e.target.value);
+    });
+    document.getElementById('app-name-input').addEventListener('input', (e) => {
+      applyAppName(e.target.value.trim());
     });
     document.getElementById('export-json-btn').addEventListener('click', exportJson);
     document.getElementById('import-json-btn').addEventListener('click', () => {
