@@ -1,20 +1,7 @@
 # Ambr3Calendar
 A privacy-first, open-source calendar web app. All data stays on your device — no servers, no accounts, no tracking.
 
-Hi, I’m ambr3. 
-I build open source projects because I genuinely like doing it. I also enjoy figuring things out, making something useful, most the projects i make are for my self but i also put it out there for others.
-
-I’m also a privacy advocate. That shows in the projects i make: no trackers, no unnecessary cookies, just software that respects people.
-
-This isn’t my day job. My projects are vibe-coded assisted. Can i code.. Yes! is my code great.. No. I use it to get momentum and keep going, otherwise I’d get stuck, lose focus, and drop the project. I make no apologies for using it
-
-Thanks for stopping by. If you like privacy-friendly open source, you’re in the right place. Feel free to explore, star, or fork.
-
-Fun FAQ
-I started coding on Qbasic (shows my age).
-Why the name ambr3? couldn't think of i profile name, there was a sun-cream bottle in front of me with it written on so i used that.
-
-I would always recommend using Vanadium (GrapheneOS) or Brave Browser to install PWA's for max security. Please use at your own risk, as stated this has been vibe-coded and always check for security flaws before using.
+I would always recommend using Vanadium (GrapheneOS) or Brave Browser to install PWA's for max security. Please use at your own risk, this has been vibe-coded, all code has been read before each push but always check for security flaws before using. My coding is not the best.
 
 ---
 ## Features
