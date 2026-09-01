@@ -7,8 +7,8 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; worker-src 'self'">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), midi=(), serial=(), display-capture=(), accelerometer=(), gyroscope=(), magnetometer=(), idle-detection=(), screen-wake-lock=(), clipboard-read=(), clipboard-write=()">
-  <meta name="theme-color" content="#4facfe">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1b2a">
+  <meta name="theme-color" content="#ede9fe">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#241b4d">
   <meta name="color-scheme" content="light dark">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -18,7 +18,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon-192.png" type="image/png">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/theme.css?v=19">
 </head>
 <body>
   <div id="app">
@@ -107,7 +107,7 @@
           <label for="app-name-input">App Name</label>
           <input type="text" id="app-name-input" placeholder="Ambr3Calendar" maxlength="30" autocomplete="off">
           <label for="accent-color-input">Accent Colour</label>
-          <input type="color" id="accent-color-input" value="#4facfe">
+          <input type="color" id="accent-color-input" value="#8b5cf6">
           <label for="week-start-select">Week starts on</label>
           <div class="select-wrapper">
             <select id="week-start-select">
@@ -164,60 +164,62 @@
         </div>
         <form id="event-form">
           <input type="hidden" id="event-id">
-          <label for="event-title">Title</label>
-          <input type="text" id="event-title" required placeholder="Event name" autocomplete="off">
-          <label for="event-time">Time</label>
-          <input type="time" id="event-time">
-          <label for="event-end-time">End Time</label>
-          <input type="time" id="event-end-time">
-          <label for="event-end-date">End Date</label>
-          <input type="date" id="event-end-date">
-          <label for="event-reminder">Reminder</label>
-          <div class="select-wrapper">
-            <select id="event-reminder">
-              <option value="">None</option>
-              <option value="0">At time of event</option>
-              <option value="10">10 minutes before</option>
-              <option value="30">30 minutes before</option>
-              <option value="60">1 hour before</option>
-              <option value="1440">1 day before</option>
-            </select>
-          </div>
-          <label for="event-desc">Description</label>
-          <textarea id="event-desc" rows="2" placeholder="Optional notes"></textarea>
-
-          <label for="event-recurrence">Repeat</label>
-          <div class="select-wrapper">
-            <select id="event-recurrence">
-              <option value="none">Never</option>
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
-              <option value="yearly">Yearly</option>
-            </select>
-          </div>
-
-          <div id="recurrence-options" class="hidden">
-            <div class="recurrence-interval-row">
-              <span class="recurrence-label">Every</span>
-              <input type="number" id="recurrence-interval" min="1" max="99" value="1">
-              <span id="recurrence-unit">week(s)</span>
+          <div class="form-scroll">
+            <label for="event-title">Title</label>
+            <input type="text" id="event-title" required placeholder="Event name" autocomplete="off">
+            <label for="event-time">Time</label>
+            <input type="time" id="event-time">
+            <label for="event-end-time">End Time</label>
+            <input type="time" id="event-end-time">
+            <label for="event-end-date">End Date</label>
+            <input type="date" id="event-end-date">
+            <label for="event-reminder">Reminder</label>
+            <div class="select-wrapper">
+              <select id="event-reminder">
+                <option value="">None</option>
+                <option value="0">At time of event</option>
+                <option value="10">10 minutes before</option>
+                <option value="30">30 minutes before</option>
+                <option value="60">1 hour before</option>
+                <option value="1440">1 day before</option>
+              </select>
             </div>
-            <label for="recurrence-end">Until</label>
-            <input type="date" id="recurrence-end">
-          </div>
+            <label for="event-desc">Description</label>
+            <textarea id="event-desc" rows="2" placeholder="Optional notes"></textarea>
 
-          <label>Color</label>
-          <div id="color-picker">
-            <button type="button" class="color-dot" data-color="#6366f1" aria-label="Event color #6366f1" aria-pressed="false"></button>
-            <button type="button" class="color-dot" data-color="#ef4444" aria-label="Event color #ef4444" aria-pressed="false"></button>
-            <button type="button" class="color-dot" data-color="#f97316" aria-label="Event color #f97316" aria-pressed="false"></button>
-            <button type="button" class="color-dot" data-color="#10b981" aria-label="Event color #10b981" aria-pressed="false"></button>
-            <button type="button" class="color-dot" data-color="#3b82f6" aria-label="Event color #3b82f6" aria-pressed="false"></button>
-            <button type="button" class="color-dot" data-color="#ec4899" aria-label="Event color #ec4899" aria-pressed="false"></button>
-            <button type="button" class="color-dot" data-color="#8b5cf6" aria-label="Event color #8b5cf6" aria-pressed="false"></button>
+            <label for="event-recurrence">Repeat</label>
+            <div class="select-wrapper">
+              <select id="event-recurrence">
+                <option value="none">Never</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </div>
+
+            <div id="recurrence-options" class="hidden">
+              <div class="recurrence-interval-row">
+                <span class="recurrence-label">Every</span>
+                <input type="number" id="recurrence-interval" min="1" max="99" value="1">
+                <span id="recurrence-unit">week(s)</span>
+              </div>
+              <label for="recurrence-end">Until</label>
+              <input type="date" id="recurrence-end">
+            </div>
+
+            <label>Color</label>
+            <div id="color-picker">
+              <button type="button" class="color-dot" data-color="#6366f1" aria-label="Event color #6366f1" aria-pressed="false"></button>
+              <button type="button" class="color-dot" data-color="#ef4444" aria-label="Event color #ef4444" aria-pressed="false"></button>
+              <button type="button" class="color-dot" data-color="#f97316" aria-label="Event color #f97316" aria-pressed="false"></button>
+              <button type="button" class="color-dot" data-color="#10b981" aria-label="Event color #10b981" aria-pressed="false"></button>
+              <button type="button" class="color-dot" data-color="#3b82f6" aria-label="Event color #3b82f6" aria-pressed="false"></button>
+              <button type="button" class="color-dot" data-color="#ec4899" aria-label="Event color #ec4899" aria-pressed="false"></button>
+              <button type="button" class="color-dot" data-color="#8b5cf6" aria-label="Event color #8b5cf6" aria-pressed="false"></button>
+            </div>
+            <input type="hidden" id="event-color" value="#6366f1">
           </div>
-          <input type="hidden" id="event-color" value="#6366f1">
           <div class="form-actions">
             <button type="button" id="delete-event-btn" class="danger hidden">Delete</button>
             <button type="submit" class="primary">Save</button>
@@ -226,9 +228,9 @@
       </div>
     </div>
 
-    <footer id="privacy-note">Made with ❤️ 🇬🇧 &middot; v0.3.0 &middot; 100% private &middot; all data stays on your device &middot; <a href="https://github.com/ambr3/-Ambr3Calendar" target="_blank" rel="noopener noreferrer">open source</a> under GPL v3</footer>
+    <footer id="privacy-note">Made with ❤️ 🇬🇧 &middot; v0.4.0 &middot; 100% private, all data stays on your device &middot; <a href="https://github.com/ambr3/-Ambr3Calendar" target="_blank" rel="noopener noreferrer">Open source</a> · GPL v3</footer>
   </div>
 
-  <script src="js/app.js?v=2.4"></script>
+  <script src="js/app.js?v=2.6"></script>
 </body>
 </html>

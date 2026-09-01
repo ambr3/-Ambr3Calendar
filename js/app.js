@@ -38,7 +38,7 @@
   let currentView = 'month';
   let weekStart = 0;
   let lang = 'en';
-  let accentColor = '#4facfe';
+  let accentColor = '#8b5cf6';
   let appName = '';
   let events = {};
   let selectedCountries = ['uk'];
