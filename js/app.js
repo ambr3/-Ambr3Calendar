@@ -1041,6 +1041,19 @@
     });
   }
 
+  function scrollInputIntoView(input) {
+    const modal = input.closest('.modal-content');
+    if (!modal) return;
+    const focus = () => {
+      const rect = input.getBoundingClientRect();
+      const modalRect = modal.getBoundingClientRect();
+      const within = rect.top >= modalRect.top && rect.bottom <= modalRect.bottom;
+      if (!within) input.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    };
+    setTimeout(focus, 300);
+    setTimeout(focus, 700);
+  }
+
   // ===== INIT =====
   function init() {
     initTheme();
@@ -1117,7 +1130,8 @@
   function populateSettings() {
     document.getElementById('week-start-select').value = String(weekStart);
     const ls = document.getElementById('lang-select');
-    ls.innerHTML = Object.keys(LANGS).map(c => `<option value="${c}">${c.toUpperCase()}</option>`).join('');
+    const langNames = { en: 'English', fr: 'Fran\u00e7ais', de: 'Deutsch', es: 'Espa\u00f1ol', it: 'Italiano', nl: 'Nederlands', pt: 'Portugu\u00eas', tr: 'T\u00fcrk\u00e7e', sr: '\u0421\u0440\u043f\u0441\u043a\u0438', 'sr-lat': 'Srpski' };
+    ls.innerHTML = Object.keys(LANGS).map(c => `<option value="${c}">${langNames[c] || c}</option>`).join('');
     ls.value = lang;
     document.getElementById('accent-color-input').value = accentColor;
     document.getElementById('app-name-input').value = appName;
@@ -1546,7 +1560,6 @@
       const col = document.createElement('div');
       col.className = 'week-col';
       col.dataset.key = key;
-
       const head = document.createElement('div');
       head.className = 'week-day-head' + (isToday ? ' today' : '') + (isOther ? ' other-month' : '');
       head.innerHTML = `<span>${dayName(d.getDay())}</span><span class="week-day-num">${d.getDate()}</span>`;
@@ -1592,6 +1605,18 @@
       body.appendChild(col);
     }
     wk.appendChild(body);
+
+    const todayArr = new Date();
+    const weekStartDate = startOfWeek(currentDate);
+    const scrollRange = new Date(weekStartDate);
+    scrollRange.setDate(scrollRange.getDate() + 7);
+    if (todayArr >= weekStartDate && todayArr < scrollRange) {
+      const nowMin = todayArr.getHours() * 60 + todayArr.getMinutes();
+      requestAnimationFrame(() => {
+        const wkBody = wk.querySelector('.week-body');
+        if (wkBody) wkBody.scrollTop = Math.max(0, (nowMin / 60) * hourPx - 120);
+      });
+    }
   }
 
   function renderYearView() {
@@ -2372,6 +2397,10 @@
     document.getElementById('close-modal').addEventListener('click', closeModal);
     eventForm.addEventListener('submit', handleSubmit);
     deleteBtn.addEventListener('click', handleDelete);
+
+    eventForm.querySelectorAll('input, textarea, select').forEach(el => {
+      el.addEventListener('focus', () => scrollInputIntoView(el));
+    });
 
     document.querySelectorAll('.color-dot').forEach(dot => {
       dot.addEventListener('click', () => setEventColor(dot.dataset.color));

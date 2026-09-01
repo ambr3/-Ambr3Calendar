@@ -1,0 +1,12 @@
+# Security headers for Netlify (see also .htaccess for Apache).
+# Content-Security-Policy is enforced only as an HTTP header — `frame-ancestors`
+# is ignored inside a <meta> tag, so it MUST be sent by the server.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), clipboard-read=(), clipboard-write=(), usb=(), midi=(), serial=(), display-capture=(), accelerometer=(), gyroscope=(), magnetometer=(), idle-detection=(), screen-wake-lock=()
+
+/index.html
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; worker-src 'self'

@@ -30,7 +30,7 @@
 
   --primary: var(--accent-color);
   --primary-hover: #3a9be0;
-  --primary-grad: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 60%, #fff));
+  --primary-grad: var(--accent-color);
   --primary-dim: color-mix(in srgb, var(--accent-color) 18%, transparent);
   --accent-2: #ff6b9d;
 
@@ -743,7 +743,8 @@ header button:active {
 }
 
 #add-event-btn:hover {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-color) 80%, #fff), color-mix(in srgb, var(--accent-color) 60%, #333));
+  background: var(--accent-color);
+  filter: brightness(1.08);
   transform: translateY(-1px);
   box-shadow: 0 8px 28px color-mix(in srgb, var(--accent-color) 50%, transparent);
 }
@@ -777,14 +778,21 @@ header button:active {
   width: 100%;
   max-width: 540px;
   border-radius: 24px 24px 0 0;
-  padding: 0 20px 20px;
+  padding: 0 20px calc(32px + env(safe-area-inset-bottom, 0px));
   max-height: 85vh;
+  max-height: 85dvh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   border-top: 1px solid var(--color-card-border);
   box-shadow: var(--shadow-lg);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   transition: background 0.25s ease;
+}
+
+#event-form .form-actions {
+  padding-bottom: max(4px, env(safe-area-inset-bottom, 0px));
 }
 
 [data-theme="dark"] .modal-content {
@@ -965,7 +973,15 @@ header button:active {
   border: 2px solid rgba(255, 255, 255, 0.3);
   cursor: pointer;
   transition: all 0.15s ease;
+  background: #6366f1;
 }
+
+.color-dot[data-color="#ef4444"] { background: #ef4444; }
+.color-dot[data-color="#f97316"] { background: #f97316; }
+.color-dot[data-color="#10b981"] { background: #10b981; }
+.color-dot[data-color="#3b82f6"] { background: #3b82f6; }
+.color-dot[data-color="#ec4899"] { background: #ec4899; }
+.color-dot[data-color="#8b5cf6"] { background: #8b5cf6; }
 
 .color-dot:hover {
   transform: scale(1.15);
@@ -1003,7 +1019,8 @@ header button:active {
 }
 
 .form-actions .primary:hover {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-color) 80%, #fff), color-mix(in srgb, var(--accent-color) 60%, #333));
+  background: var(--accent-color);
+  filter: brightness(1.08);
   transform: translateY(-1px);
 }
 
@@ -1188,7 +1205,8 @@ header button:active {
 }
 
 #jump-close:hover {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-color) 80%, #fff), color-mix(in srgb, var(--accent-color) 60%, #333));
+  background: var(--accent-color);
+  filter: brightness(1.08);
 }
 
 /* ===== WEEK VIEW ===== */
