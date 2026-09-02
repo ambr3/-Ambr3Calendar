@@ -707,6 +707,7 @@ header button:active { transform: scale(0.93); }
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  overflow-wrap: break-word;
   border-radius: 28px 28px 0 0;
   border: 1px solid var(--glass-border);
   border-bottom: none;
@@ -1436,7 +1437,7 @@ header button:active { transform: scale(0.93); }
 }
 
 /* ===== SETTINGS ===== */
-#settings-modal .modal-content { max-width: 560px; overflow-y: auto; }
+#settings-modal .modal-content { max-width: 560px; overflow-y: auto; overflow-x: hidden; word-wrap: break-word; }
 
 .settings-section { margin-bottom: 4px; }
 
@@ -1507,7 +1508,7 @@ header button:active { transform: scale(0.93); }
 
 .settings-row button {
   flex: 1;
-  min-width: 120px;
+  min-width: 0;
   padding: 12px 14px;
   background: var(--glass-faint);
   border: 1px solid var(--glass-border);
@@ -1517,6 +1518,9 @@ header button:active { transform: scale(0.93); }
   font-weight: 700;
   cursor: pointer;
   transition: all 0.15s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .settings-row button:hover {
@@ -1540,6 +1544,7 @@ header button:active { transform: scale(0.93); }
   color: var(--text-muted);
   margin-top: 12px;
   line-height: 1.65;
+  overflow-wrap: break-word;
 }
 
 /* ===== RESPONSIVE ===== */

@@ -2,7 +2,7 @@
   "name": "Ambr3Calendar",
   "short_name": "Ambr3Calendar",
   "id": "ambr3-calendar",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "lang": "en",
   "dir": "ltr",
   "description": "A 100% private calendar. All data stays on your device — no accounts, no servers, no tracking.",
