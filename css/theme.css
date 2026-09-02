@@ -694,6 +694,8 @@ header button:active { transform: scale(0.93); }
   align-items: flex-end;
   justify-content: center;
   z-index: 20;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 .modal-content {
@@ -1439,7 +1441,7 @@ header button:active { transform: scale(0.93); }
 /* ===== SETTINGS ===== */
 #settings-modal .modal-content { max-width: 560px; overflow-y: auto; overflow-x: hidden; word-wrap: break-word; }
 
-.settings-section { margin-bottom: 4px; }
+.settings-section { margin-bottom: 4px; padding: 0 22px; }
 
 .settings-section h4 {
   font-size: 0.72rem;
@@ -1507,7 +1509,7 @@ header button:active { transform: scale(0.93); }
 }
 
 .settings-row button {
-  flex: 1;
+  flex: 1 1 0;
   min-width: 0;
   padding: 12px 14px;
   background: var(--glass-faint);
@@ -1520,7 +1522,6 @@ header button:active { transform: scale(0.93); }
   transition: all 0.15s;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .settings-row button:hover {
