@@ -1029,16 +1029,38 @@
   const searchOverlay = document.getElementById('search-overlay');
   let editingKey = null;
 
-  // ===== ANDROID TIME FIX =====
+  // ===== CUSTOM TIME PICKER =====
   const timeValues = {};
-  function setupTimeInputFix() {
-    ['event-time', 'event-end-time'].forEach(id => {
-      const input = document.getElementById(id);
-      if (!input) return;
-      input.addEventListener('change', () => { timeValues[id] = input.value; });
-      input.addEventListener('input', () => { timeValues[id] = input.value; });
-      input.addEventListener('blur', () => { timeValues[id] = input.value; });
+  function setupTimePicker() {
+    ['event-time', 'event-end-time'].forEach(prefix => {
+      const hourEl = document.getElementById(prefix + '-hour');
+      const minEl = document.getElementById(prefix + '-minute');
+      const hidden = document.getElementById(prefix);
+      if (!hourEl || !minEl || !hidden) return;
+      const sync = () => {
+        const val = (hourEl.value && minEl.value) ? hourEl.value + ':' + minEl.value : '';
+        hidden.value = val;
+        timeValues[prefix] = val;
+      };
+      hourEl.addEventListener('change', sync);
+      minEl.addEventListener('change', sync);
     });
+  }
+  function setTimePicker(prefix, timeStr) {
+    const hourEl = document.getElementById(prefix + '-hour');
+    const minEl = document.getElementById(prefix + '-minute');
+    const hidden = document.getElementById(prefix);
+    if (timeStr && timeStr.includes(':')) {
+      const [h, m] = timeStr.split(':');
+      if (hourEl) hourEl.value = h;
+      if (minEl) minEl.value = m;
+      if (hidden) hidden.value = timeStr;
+    } else {
+      if (hourEl) hourEl.value = '';
+      if (minEl) minEl.value = '';
+      if (hidden) hidden.value = '';
+    }
+    timeValues[prefix] = hidden ? hidden.value : '';
   }
 
   function scrollInputIntoView(input) {
@@ -1071,7 +1093,7 @@
     populateSettings();
     renderCalendar();
     bindEvents();
-    setupTimeInputFix();
+    setupTimePicker();
     registerSW();
     initReminders();
   }
@@ -1897,8 +1919,8 @@
     editingKey = null;
     document.getElementById('event-id').value = eventId || '';
     document.getElementById('event-title').value = '';
-    document.getElementById('event-time').value = '';
-    document.getElementById('event-end-time').value = '';
+    setTimePicker('event-time', '');
+    setTimePicker('event-end-time', '');
     document.getElementById('event-end-date').value = '';
     document.getElementById('event-reminder').value = '';
     document.getElementById('event-desc').value = '';
@@ -1920,8 +1942,8 @@
       const ev = (events[sourceKey] || []).find(e => e.id === eventId);
       if (ev) {
         document.getElementById('event-title').value = ev.title;
-        document.getElementById('event-time').value = ev.time || '';
-        document.getElementById('event-end-time').value = ev.endTime || '';
+        setTimePicker('event-time', ev.time || '');
+        setTimePicker('event-end-time', ev.endTime || '');
         document.getElementById('event-end-date').value = ev.endDate || '';
         document.getElementById('event-reminder').value = ev.reminder != null ? String(ev.reminder) : '';
         document.getElementById('event-desc').value = ev.desc || '';

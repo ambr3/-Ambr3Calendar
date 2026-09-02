@@ -4,8 +4,8 @@
 :root {
   color-scheme: light;
   --accent-color: #8b5cf6;
-  --accent-hover: #7c3aed;
-  --accent-glow: 0 6px 24px rgba(139, 92, 246, 0.45);
+  --accent-hover: color-mix(in srgb, var(--accent-color) 82%, #000);
+  --accent-glow: 0 6px 24px color-mix(in srgb, var(--accent-color) 40%, transparent);
 
   --glass: rgba(255, 255, 255, 0.58);
   --glass-strong: rgba(255, 255, 255, 0.82);
@@ -23,7 +23,7 @@
   --primary: var(--accent-color);
   --primary-hover: var(--accent-hover);
   --primary-dim: color-mix(in srgb, var(--primary) 16%, transparent);
-  --primary-grad: linear-gradient(135deg, #a78bfa, #7c3aed);
+  --primary-grad: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 72%, #fff));
   --on-primary: #ffffff;
 
   --danger: #e11d48;
@@ -42,7 +42,7 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --accent-hover: #a78bfa;
+  --accent-hover: color-mix(in srgb, var(--accent-color) 115%, #fff);
 
   --glass: rgba(36, 30, 62, 0.55);
   --glass-strong: rgba(42, 36, 72, 0.82);
@@ -407,7 +407,7 @@ header button:active { transform: scale(0.93); }
   border-radius: 28px 28px 0 0;
   border: 1px solid var(--glass-border);
   border-bottom: none;
-  padding: 0 20px 20px;
+  padding: 0 24px 24px;
   box-shadow: var(--shadow-lg);
   z-index: 10;
   max-height: 62vh;
@@ -495,7 +495,7 @@ header button:active { transform: scale(0.93); }
   border-radius: 5px;
   background: var(--primary-grad);
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(139, 92, 246, 0.35);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent-color) 35%, transparent);
 }
 
 .country-item,
@@ -624,6 +624,10 @@ header button:active { transform: scale(0.93); }
   gap: 6px;
   flex-wrap: wrap;
   color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .event-info .event-time-display {
@@ -675,7 +679,7 @@ header button:active { transform: scale(0.93); }
   transition: all 0.18s;
 }
 
-#add-event-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(139, 92, 246, 0.5); }
+#add-event-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px color-mix(in srgb, var(--accent-color) 50%, transparent); }
 #add-event-btn:active { transform: scale(0.98); }
 
 /* ===== MODAL ===== */
@@ -884,6 +888,49 @@ header button:active { transform: scale(0.93); }
 /* ===== COLOR PICKER ===== */
 #color-picker { display: flex; gap: 12px; padding: 8px 0; flex-wrap: wrap; }
 
+/* ===== TIME PICKER ===== */
+.time-picker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.time-picker select {
+  flex: 1;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.45);
+  -webkit-backdrop-filter: var(--blur-sm);
+  backdrop-filter: var(--blur-sm);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 1.1rem;
+  font-family: inherit;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  text-align: center;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+[data-theme="dark"] .time-picker select { background: rgba(255, 255, 255, 0.06); }
+
+.time-picker select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-dim);
+}
+
+.time-picker select option { color: var(--text); background: var(--glass-strong); font-size: 1rem; }
+
+.time-sep {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
 .color-dot {
   width: 38px;
   height: 38px;
@@ -938,7 +985,7 @@ header button:active { transform: scale(0.93); }
   box-shadow: var(--accent-glow);
 }
 
-.form-actions .primary:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(139, 92, 246, 0.5); }
+.form-actions .primary:hover { transform: translateY(-1px); box-shadow: 0 8px 28px color-mix(in srgb, var(--accent-color) 50%, transparent); }
 .form-actions .primary:active { transform: scale(0.97); }
 
 .form-actions .danger {
@@ -1474,7 +1521,7 @@ header button:active { transform: scale(0.93); }
   box-shadow: var(--accent-glow);
 }
 
-.settings-row button.primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(139, 92, 246, 0.5); }
+.settings-row button.primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px color-mix(in srgb, var(--accent-color) 50%, transparent); }
 
 .settings-hint {
   font-size: 0.76rem;

@@ -18,7 +18,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon-192.png" type="image/png">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="stylesheet" href="css/theme.css?v=19">
+  <link rel="stylesheet" href="css/theme.css?v=20">
 </head>
 <body>
   <div id="app">
@@ -167,10 +167,20 @@
           <div class="form-scroll">
             <label for="event-title">Title</label>
             <input type="text" id="event-title" required placeholder="Event name" autocomplete="off">
-            <label for="event-time">Time</label>
-            <input type="time" id="event-time">
-            <label for="event-end-time">End Time</label>
-            <input type="time" id="event-end-time">
+            <label for="event-time-hour">Time</label>
+            <div class="time-picker">
+              <select id="event-time-hour" aria-label="Hour"><option value="">--</option><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option></select>
+              <span class="time-sep">:</span>
+              <select id="event-time-minute" aria-label="Minute"><option value="">--</option><option value="00">00</option><option value="05">05</option><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="30">30</option><option value="35">35</option><option value="40">40</option><option value="45">45</option><option value="50">50</option><option value="55">55</option></select>
+              <input type="hidden" id="event-time" value="">
+            </div>
+            <label for="event-end-time-hour">End Time</label>
+            <div class="time-picker">
+              <select id="event-end-time-hour" aria-label="End hour"><option value="">--</option><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option></select>
+              <span class="time-sep">:</span>
+              <select id="event-end-time-minute" aria-label="End minute"><option value="">--</option><option value="00">00</option><option value="05">05</option><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="30">30</option><option value="35">35</option><option value="40">40</option><option value="45">45</option><option value="50">50</option><option value="55">55</option></select>
+              <input type="hidden" id="event-end-time" value="">
+            </div>
             <label for="event-end-date">End Date</label>
             <input type="date" id="event-end-date">
             <label for="event-reminder">Reminder</label>
@@ -228,9 +238,9 @@
       </div>
     </div>
 
-    <footer id="privacy-note">Made with ❤️ 🇬🇧 &middot; v0.4.0 &middot; 100% private, all data stays on your device &middot; <a href="https://github.com/ambr3/-Ambr3Calendar" target="_blank" rel="noopener noreferrer">Open source</a> · GPL v3</footer>
+    <footer id="privacy-note">Made with ❤️ 🇬🇧 &middot; v0.4.2 &middot; 100% private, all data stays on your device &middot; <a href="https://github.com/ambr3/-Ambr3Calendar" target="_blank" rel="noopener noreferrer">Open source</a> · GPL v3</footer>
   </div>
 
-  <script src="js/app.js?v=2.7"></script>
+  <script src="js/app.js?v=2.8"></script>
 </body>
 </html>
