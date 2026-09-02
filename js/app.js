@@ -1042,13 +1042,16 @@
   }
 
   function scrollInputIntoView(input) {
-    const modal = input.closest('.modal-content');
-    if (!modal) return;
+    const scroll = input.closest('.form-scroll');
+    if (!scroll) return;
     const focus = () => {
-      const rect = input.getBoundingClientRect();
-      const modalRect = modal.getBoundingClientRect();
-      const within = rect.top >= modalRect.top && rect.bottom <= modalRect.bottom;
-      if (!within) input.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      if (!input.closest('#event-form:not(.hidden)')) return;
+      const inputBottom = input.offsetTop + input.offsetHeight;
+      const scrollTop = scroll.scrollTop;
+      const scrollVisible = scroll.clientHeight;
+      if (inputBottom - scrollTop > scrollVisible - 70) {
+        input.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
     };
     setTimeout(focus, 300);
     setTimeout(focus, 700);
@@ -2401,6 +2404,22 @@
     eventForm.querySelectorAll('input, textarea, select').forEach(el => {
       el.addEventListener('focus', () => scrollInputIntoView(el));
     });
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', () => {
+        const formActions = document.querySelector('#event-form .form-actions');
+        const modalContent = eventModal.querySelector('.modal-content');
+        if (!formActions || !modalContent) return;
+        const bottom = window.innerHeight - window.visualViewport.height - window.visualViewport.offsetTop;
+        if (bottom > 50) {
+          modalContent.style.maxHeight = window.visualViewport.height + 'px';
+          modalContent.style.transform = 'translateY(' + (-bottom) + 'px)';
+        } else {
+          modalContent.style.maxHeight = '';
+          modalContent.style.transform = '';
+        }
+      });
+    }
 
     document.querySelectorAll('.color-dot').forEach(dot => {
       dot.addEventListener('click', () => setEventColor(dot.dataset.color));

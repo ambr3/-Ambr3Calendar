@@ -744,7 +744,9 @@ header button:active { transform: scale(0.93); }
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 0 22px;
+  padding-bottom: 16px;
   overscroll-behavior: contain;
+  scroll-padding-bottom: 70px;
 }
 
 #event-form label {
