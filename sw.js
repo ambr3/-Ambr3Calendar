@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ambr3-calendar-v20';
+const CACHE_NAME = 'ambr3-calendar-v21';
 const BASE = self.location.pathname.replace(/\/[^/]*$/, '/');
 const ASSETS = [
   BASE,
